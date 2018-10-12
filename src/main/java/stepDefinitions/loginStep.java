@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -46,12 +47,22 @@ public class loginStep {
     		assertTrue(texto.contains("Logged in successfully"));
     	}
     
-    @When("El usuario no se puede loguear con credeciales erroneas")
+    @When("^El usuario no se puede loguear con credeciales erroneas\"(.*)\"$")
     public void usuarioIngresaCredencialesErroneas () {
     	driver.findElement(By.id("MainContent_txtUserName")).sendKeys("tim@testmail.com");
     	driver.findElement(By.id("MainContent_txtPassword")).sendKeys("trpass2356");
     	
     	driver.findElement(By.id("MainContent_btnLogin")).click();
+    }
+    
+    @When("^el usuario ingresa usuario\"(.*)\"$")
+    public void usuarioIngresaElNombre (String nombre) {
+    	driver.findElement(By.id("MainContent_txtUserName")).sendKeys(nombre);
+    }
+    
+    @And("^el usuario ingresa contraseña\"(.*)\"$")
+    public void usuarioIngresaElPassword (CharSequence[] password) {
+    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys(password);
     }
     
     @Then("El usuario no deberia ver su cuenta")
