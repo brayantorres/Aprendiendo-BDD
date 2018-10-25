@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features="featureFiles", glue="stepDefinitions", tags = {"@registro"})
+@CucumberOptions(features="featureFiles", glue="stepDefinitions", tags = {"@login"})
 public class Runner {
 
 }

@@ -5,11 +5,14 @@ Feature: Prueba Registro
   Me pueda registrar
 
   Scenario: El usuario ingresa sus datos en los campos
-    Given El usuario esta en la pagina registro
-    And El usuario ingresa sus datos 
-    When el usuario debe ser registrado
-    
-  Scenario: El usuario no puede dejar campos vacios mientras se registra
-    Given I want to write a step with <name>
-    When I check for the <value> in step
-    Then I verify the <status> in step
+    Given el usuario esta en la pagina registro
+    When el usuario ingresa su primer nombre "Brayan David Torres Suárez"
+    And el usuario ingresa el email "brayantorres@unac.edu.co"
+    And el usuario ingresa el telefono "3256987460"
+    And el usuario da click en genero Male
+    And el usuario ingresa password "asd$123"
+    And el usuario verifica su password "asd$123"
+    And el usuario selecciona el pais "Ecuador"
+    And el usuario elige suscripcion Weekly Email
+    And el usuario da click en submit
+    Then el usuario debe ser registrado

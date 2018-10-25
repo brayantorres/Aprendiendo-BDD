@@ -9,17 +9,22 @@ import org.openqa.selenium.support.ui.Select;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import pages.RegistroPage;
 
 public class registroStep {
 	
 	WebDriver driver; 
+	RegistroPage registropage;
+	
 	@Before
 	public void setUp() {
 		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
     	driver = new ChromeDriver();
+    	registropage = new RegistroPage(driver);
 	}
 	
 	@After
@@ -27,27 +32,56 @@ public class registroStep {
 		driver.quit();
 	}
 	
-	@Given("El usuario esta en la pagina registro")
+	@Given("el usuario esta en la pagina registro")
     public void usuarioEstaEnRegistro () {
     	driver.get("http://sdettraining.com/trguitransactions/NewAccount.aspx");
     }
 	
-	@When("El usuario ingresa sus datos")
-    public void usuarioIngresaSusDastos () {
-    	driver.findElement(By.id("MainContent_txtFirstName")).sendKeys("Brayan David Torres Suarez");
-    	driver.findElement(By.id("MainContent_txtEmail")).sendKeys("brayantorres@unac.edu.co");
-    	driver.findElement(By.id("MainContent_txtHomePhone")).sendKeys("3012363749");
-    	driver.findElement(By.id("MainContent_Male")).click();
-    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys("asd$123");
-    	driver.findElement(By.id("MainContent_txtVerifyPassword")).sendKeys("asd$123");
-    	
-    	Select selectordrop = new Select(driver.findElement(By.id("MainContent_menuCountry")));
-    	selectordrop.selectByValue("Ecuador");
-    	
-    	driver.findElement(By.id("MainContent_checkMonthlyEmail")).click();
-    	
-    	driver.findElement(By.id("MainContent_btnSubmit")).click();
+	@When("el usuario ingresa su primer nombre \"(.*)\"$")
+    public void usuarioIngresaSusDastos (String user) {
+    	registropage.usuarioIngresaSuNombre(user); 	
     }
+	
+	@And("el usuario ingresa el email \"(.*)\"$")
+	public void usuarioIngresaEmail(String email) {
+		registropage.usuarioIngresaSuEmail(email);
+	}
+	
+	@And("el usuario ingresa el telefono \"(.*)\"$")
+	public void usarioIngresaTelefono(String telefono) {
+		registropage.usuarioIngresaSuTelefono(telefono);
+	}
+	
+	@And("el usuario da click en genero Male")
+	public void usuarioDaClickEnMale() {
+		registropage.usuarioDaClickEnSuGenero();
+	}
+	
+	@And("el usuario ingresa password \"(.*)\"$")
+	public void usuarioIngresaPassword(String password) {
+		registropage.usuarioIngresaPassword(password);
+	}
+	
+	@And("el usuario verifica su password \"(.*)\"$")
+	public void usuarioVerificaPassword(String verifypassword) {
+		registropage.usuarioVerificaSuPassword(verifypassword);
+	}
+	
+	@And("el usuario selecciona el pais \"(.*)\"$")
+	public void usuarioSeleccionaPais(String pais) {
+		Select selectordrop = new Select(driver.findElement(By.id("MainContent_menuCountry")));
+    	selectordrop.selectByValue(pais);
+	}
+	
+	@And("el usuario elige suscripcion Weekly Email")
+	public void usuarioSeSuscribeWeeklyEmail() {
+		registropage.usuarioSeSuscribeWeeklyEmail();
+	}
+	
+	@And("el usuario da click en submit")
+	public void usuarioDaClickEnSubmit() {
+		registropage.usuarioDaClickEnSubmit();
+	}
 	
 	@Then("el usuario debe ser registrado")
     public void usuarioDebeEstarRegistrado () {

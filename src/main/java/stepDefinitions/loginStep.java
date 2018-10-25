@@ -12,14 +12,18 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import pages.LoginPage;
 
 public class loginStep {
 	
 	WebDriver driver; 
+	LoginPage loginpages;
+	
 	@Before
 	public void setUp() {
 		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
     	driver = new ChromeDriver();
+    	loginpages = new LoginPage(driver);
 	}
 	
 	@After
@@ -32,12 +36,19 @@ public class loginStep {
     	driver.get("http://sdettraining.com/trguitransactions/AccountManagement.aspx");
     }
     
-    @When("el usuario ingresa credenciales validas")
-    public void usuarioIngresaCredencialesValidas () {
-    	driver.findElement(By.id("MainContent_txtUserName")).sendKeys("tim@testmail.com");
-    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys("trpass");
-    	
-    	driver.findElement(By.id("MainContent_btnLogin")).click();
+    @When("^el usuario ingresa usuario \"(.*)\"$")
+    public void usuarioIngresaCredencialesValidas (String email) {
+    	loginpages.ingresaremailaddress(email);
+    }
+    
+    @And("^el usuario ingresa contraseña \"(.*)\"$")
+    public void usuarioIngresaElPassword (String password) {
+    	loginpages.ingresarpassword(password);
+    }
+    
+    @And("el usuario da click")
+    public void usuarioDaClick () {
+    	loginpages.clicklogin();
     }
     
     @Then("el usuario puede ver su panel de administracion")
@@ -48,8 +59,8 @@ public class loginStep {
     	}
     
     @When("^El usuario no se puede loguear con credeciales erroneas\"(.*)\"$")
-    public void usuarioIngresaCredencialesErroneas () {
-    	driver.findElement(By.id("MainContent_txtUserName")).sendKeys("tim@testmail.com");
+    public void usuarioIngresaCredencialesErroneas (String email) {
+    	driver.findElement(By.id("MainContent_txtUserName")).sendKeys(email);
     	driver.findElement(By.id("MainContent_txtPassword")).sendKeys("trpass2356");
     	
     	driver.findElement(By.id("MainContent_btnLogin")).click();
@@ -58,11 +69,6 @@ public class loginStep {
     @When("^el usuario ingresa usuario\"(.*)\"$")
     public void usuarioIngresaElNombre (String nombre) {
     	driver.findElement(By.id("MainContent_txtUserName")).sendKeys(nombre);
-    }
-    
-    @And("^el usuario ingresa contraseña\"(.*)\"$")
-    public void usuarioIngresaElPassword (CharSequence[] password) {
-    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys(password);
     }
     
     @Then("El usuario no deberia ver su cuenta")
